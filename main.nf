@@ -11,7 +11,6 @@ process checkSampleSheet {
     container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     memory  '2G'
     cpus 1
-    publishDir "${params.out_dir}"
     input:
         file "sample_sheet.txt"
     output:
@@ -26,7 +25,6 @@ process runArtic {
     container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 4
     memory '2G'
-    publishDir "${params.out_dir}"
     input:
         tuple val(meta), path(fastq_file), path(fastq_stats)
         path scheme_dir
@@ -81,7 +79,6 @@ process combineDepth {
   container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
   cpus 1
   memory '2G'
-  publishDir "${params.out_dir}"
   input:
     path "depth_stats/*"
   output:
@@ -100,7 +97,6 @@ process genotypeSummary {
     container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory '2G'
-    publishDir "${params.out_dir}"
     input:
         tuple val(alias), file(vcf), file(tbi), file(bam), file(bam_index)
         file "reference.vcf"
@@ -126,7 +122,6 @@ process combineGenotypeSummaries {
     container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory '2G'
-    publishDir "${params.out_dir}"
     input:
         file "summary_*.csv"
     output:
@@ -141,7 +136,6 @@ process getVersions {
     container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory '2G'
-    publishDir "${params.out_dir}"
     output:
         path "versions.txt"
     script:
@@ -159,7 +153,6 @@ process getParams {
     container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory  '2G'
-    publishDir "${params.out_dir}"
     output:
         path "params.json"
     script:
@@ -175,7 +168,6 @@ process report {
     container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory  '2G'
-    publishDir "${params.out_dir}"
     input:
         path "depth_stats/*"
         path "per_read_stats/?.gz"
@@ -231,7 +223,6 @@ process report_no_data {
     container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory  '2G'
-    publishDir "${params.out_dir}"
     input:
         path "versions/*"
         val error
@@ -256,7 +247,6 @@ process allConsensus {
     container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory  '2G'
-    publishDir "${params.out_dir}"
     input:
         file "*"
     output:
@@ -275,7 +265,6 @@ process allVariants {
     container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
     memory  '2G'
-    publishDir "${params.out_dir}"
     input:
         tuple val(alias), file(vcfs), file(tbis)
         file reference
@@ -299,10 +288,9 @@ process allVariants {
 
 
 process nextclade {
-    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
+    container "nextstrain/nextclade:3.2.1"
     cpus 1
     memory  '2G'
-    publishDir "${params.out_dir}"
     input:
         file "consensus.fasta"
         path nextclade_dataset
@@ -352,7 +340,6 @@ process pangolin {
     container "ontresearch/pangolin:shae304dd3bc308a519f26908eb9d5ffa7686131d17"
     memory '2G'
     cpus 4
-    publishDir "${params.out_dir}"
     input:
         path "consensus.fasta"
     output:
@@ -382,7 +369,6 @@ process output {
     cpus 1
     memory  '2G'
 
-    publishDir "${params.out_dir}", mode: 'copy', pattern: "*"
     input:
         file fname
     output:

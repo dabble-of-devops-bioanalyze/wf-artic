@@ -514,8 +514,7 @@ def xam_ingress(Map arguments)
 
 
 process fastcat {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 4
     memory "2 GB"
     input:
@@ -577,8 +576,7 @@ process fastcat {
 }
 
 process checkBamHeaders {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 1
     memory "2 GB"
     input: tuple val(meta), path("input_dir/reads*.bam")
@@ -599,8 +597,7 @@ process checkBamHeaders {
 
 
 process validateIndex {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 1
     memory "2 GB"
     input: tuple val(meta), path("reads.bam"), path("reads.bam.bai")
@@ -622,8 +619,7 @@ process validateIndex {
 
 
 process mergeBams {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 3
     memory "4 GB"
     input: tuple val(meta), path("input_bams/reads*.bam"), path("input_bams/reads*.bam.bai")
@@ -638,8 +634,7 @@ process mergeBams {
 
 
 process catSortBams {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 4
     memory "4 GB"
     input: tuple val(meta), path("input_bams/reads*.bam")
@@ -654,8 +649,7 @@ process catSortBams {
 
 
 process sortBam {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 3
     memory "4 GB"
     input: tuple val(meta), path("reads.bam")
@@ -669,8 +663,7 @@ process sortBam {
 
 
 process bamstats {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 3
     memory "4 GB"
     input:
@@ -806,8 +799,7 @@ def watch_path(Path input, Map margs, ArrayList extensions) {
 
 
 process move_or_compress_fq_file {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 1
     memory "2 GB"
     input:
@@ -832,8 +824,7 @@ process move_or_compress_fq_file {
 
 
 process split_fq_file {
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 1
     memory "2 GB"
     input:
@@ -1149,11 +1140,9 @@ def get_sample_sheet(Path sample_sheet, ArrayList required_sample_types) {
  * @return: string (optional)
  */
 process validate_sample_sheet {
-    publishDir params.out_dir, mode: 'copy', overwrite: true
-    cpus 1
-    label "ingress"
-    label "wf_common"
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     memory "2 GB"
+    cpus 1
     input:
         path "sample_sheet.csv"
         val required_sample_types
@@ -1168,9 +1157,8 @@ process validate_sample_sheet {
 
 // Generate an index for an input XAM file
 process samtools_index {
+    container "ontresearch/wf-common:sha8b5843d549bb210558cbb676fe537a153ce771d6"
     cpus 4
-    label "ingress"
-    label "wf_common"
     memory 4.GB
     input:
         tuple val(meta), path("reads.bam")
