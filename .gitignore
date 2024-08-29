@@ -5,3 +5,12 @@ template-workflow
 .*.swo
 *.pyc
 *.pyo
+.idea
+.nextflow*
+work/
+data/
+results/
+.DS_Store
+testing/
+testing*
+*.pyc
