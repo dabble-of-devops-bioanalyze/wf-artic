@@ -163,9 +163,9 @@ input_reads.fastq   ─── input_directory  ─── input_directory
 
 ### Output Options
 
-| Nextflow parameter name  | Type | Description | Help | Default |
-|--------------------------|------|-------------|------|---------|
-| out_dir | string | Directory for output of all workflow results. |  | output |
+| Nextflow parameter name | Type | Description | Help | Default |
+|-------------------------|------|-------------|------|---------|
+| outdir | string | Directory for output of all workflow results. |  | output |
 
 
 ### Reporting Options
