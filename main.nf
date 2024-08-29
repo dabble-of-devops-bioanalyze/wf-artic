@@ -8,8 +8,10 @@ nextflow.enable.dsl = 2
 include { fastq_ingress } from './lib/ingress'
 
 process checkSampleSheet {
-    label "artic"
+    container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
+    memory  '2G'
     cpus 1
+    publishDir "${params.out_dir}"
     input:
         file "sample_sheet.txt"
     output:
@@ -21,8 +23,10 @@ process checkSampleSheet {
 
 
 process runArtic {
-    label "artic"
-    cpus params.artic_threads
+    container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
+    cpus 4
+    memory '2G'
+    publishDir "${params.out_dir}"
     input:
         tuple val(meta), path(fastq_file), path(fastq_stats)
         path scheme_dir
@@ -74,8 +78,10 @@ process runArtic {
 
 
 process combineDepth {
-  label "artic"
+  container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
   cpus 1
+  memory '2G'
+  publishDir "${params.out_dir}"
   input:
     path "depth_stats/*"
   output:
@@ -91,8 +97,10 @@ process combineDepth {
 
 process genotypeSummary {
     // Produce a genotype summary spreadsheet
-    label "artic"
+    container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory '2G'
+    publishDir "${params.out_dir}"
     input:
         tuple val(alias), file(vcf), file(tbi), file(bam), file(bam_index)
         file "reference.vcf"
@@ -115,8 +123,10 @@ process genotypeSummary {
 
 
 process combineGenotypeSummaries {
-    label "artic"
+    container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory '2G'
+    publishDir "${params.out_dir}"
     input:
         file "summary_*.csv"
     output:
@@ -128,8 +138,10 @@ process combineGenotypeSummaries {
 
 
 process getVersions {
-    label "artic"
+    container "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory '2G'
+    publishDir "${params.out_dir}"
     output:
         path "versions.txt"
     script:
@@ -144,8 +156,10 @@ process getVersions {
 
 
 process getParams {
-    label "artic"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory  '2G'
+    publishDir "${params.out_dir}"
     output:
         path "params.json"
     script:
@@ -158,8 +172,10 @@ process getParams {
 
 
 process report {
-    label "artic"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory  '2G'
+    publishDir "${params.out_dir}"
     input:
         path "depth_stats/*"
         path "per_read_stats/?.gz"
@@ -212,8 +228,10 @@ process report {
 
 
 process report_no_data {
-    label "artic"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory  '2G'
+    publishDir "${params.out_dir}"
     input:
         path "versions/*"
         val error
@@ -235,8 +253,10 @@ process report_no_data {
 
 
 process allConsensus {
-    label "artic"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory  '2G'
+    publishDir "${params.out_dir}"
     input:
         file "*"
     output:
@@ -252,8 +272,10 @@ process allConsensus {
 
 
 process allVariants {
-    label "artic"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory  '2G'
+    publishDir "${params.out_dir}"
     input:
         tuple val(alias), file(vcfs), file(tbis)
         file reference
@@ -277,8 +299,10 @@ process allVariants {
 
 
 process nextclade {
-    label "nextclade"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
     cpus 1
+    memory  '2G'
+    publishDir "${params.out_dir}"
     input:
         file "consensus.fasta"
         path nextclade_dataset
@@ -325,8 +349,10 @@ process nextclade {
 
 
 process pangolin {
-    label "pangolin"
-    cpus params.pangolin_threads
+    container "ontresearch/pangolin:shae304dd3bc308a519f26908eb9d5ffa7686131d17"
+    memory '2G'
+    cpus 4
+    publishDir "${params.out_dir}"
     input:
         path "consensus.fasta"
     output:
@@ -352,7 +378,9 @@ process pangolin {
 // decoupling the publish from the process steps.
 process output {
     // publish inputs to output directory
-    label "artic"
+    container  "ontresearch/wf-artic:sha15e9dfa0469ddd0641dfe1a5f07bedb475a8a03d"
+    cpus 1
+    memory  '2G'
 
     publishDir "${params.out_dir}", mode: 'copy', pattern: "*"
     input:
