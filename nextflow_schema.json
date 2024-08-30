@@ -9,6 +9,27 @@
     "url": "https://github.com/epi2me-labs/wf-artic",
     "type": "object",
     "definitions": {
+        "workflow": {
+            "title": "Workflow Options",
+            "type": "object",
+            "description": "Options for configuring the workflow.",
+            "properties": {
+                "omics": {
+                    "type": "boolean",
+                    "description": "Turn on omics parameters."
+                },
+                "docker_registry": {
+                    "type": "string",
+                    "description": "Docker registry to use for pulling images.",
+                    "default": "docker.io"
+                },
+                "publish_dir_mode": {
+                    "type": "string",
+                    "description": "Publish directory mode.",
+                    "default": "copy"
+                }
+            }
+        },
         "input": {
             "title": "Input Options",
             "type": "object",
