@@ -12,6 +12,7 @@
         "workflow": {
             "title": "Workflow Options",
             "type": "object",
+            "fa_icon": "fas fa-arrow-right",
             "description": "Options for configuring the workflow.",
             "properties": {
                 "omics": {
